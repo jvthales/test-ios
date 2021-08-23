@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '11.0'
+
+target 'BankApp_Example' do
+  pod 'BankApp', :path => '../'
+
+  target 'BankApp_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

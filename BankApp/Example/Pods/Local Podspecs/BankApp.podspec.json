@@ -1,0 +1,22 @@
+{
+  "name": "BankApp",
+  "version": "0.1.0",
+  "summary": "A short description of BankApp.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/viniteixeira/BankApp",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "viniteixeira": "viniteixeira10@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/viniteixeira/BankApp.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "source_files": "BankApp/Classes/**/*"
+}

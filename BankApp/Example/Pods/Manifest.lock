@@ -1,0 +1,16 @@
+PODS:
+  - BankApp (0.1.0)
+
+DEPENDENCIES:
+  - BankApp (from `../`)
+
+EXTERNAL SOURCES:
+  BankApp:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  BankApp: 358812a38af70d3b978c3bbfee4f0422e82e771d
+
+PODFILE CHECKSUM: 5edbd62c46d10ed4034f9c02818b00c154561be2
+
+COCOAPODS: 1.8.4
