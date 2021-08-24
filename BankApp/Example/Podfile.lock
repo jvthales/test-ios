@@ -1,16 +1,42 @@
 PODS:
-  - BankApp (0.1.0)
+  - Alamofire (5.4.3)
+  - BankApp (0.1.0):
+    - Alamofire (~> 5.4)
+    - BankApp/Core (= 0.1.0)
+    - BankApp/Models (= 0.1.0)
+    - BankApp/Scenes (= 0.1.0)
+    - BankApp/Services (= 0.1.0)
+    - BankApp/Workers (= 0.1.0)
+  - BankApp/Core (0.1.0):
+    - Alamofire (~> 5.4)
+  - BankApp/Models (0.1.0):
+    - Alamofire (~> 5.4)
+    - BankApp/Core
+  - BankApp/Scenes (0.1.0):
+    - Alamofire (~> 5.4)
+    - BankApp/Core
+  - BankApp/Services (0.1.0):
+    - Alamofire (~> 5.4)
+    - BankApp/Core
+  - BankApp/Workers (0.1.0):
+    - Alamofire (~> 5.4)
+    - BankApp/Core
 
 DEPENDENCIES:
   - BankApp (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
 
 EXTERNAL SOURCES:
   BankApp:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BankApp: 358812a38af70d3b978c3bbfee4f0422e82e771d
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  BankApp: 4d13e5e080dda197d3b51d6620d43a637815ee25
 
-PODFILE CHECKSUM: 5edbd62c46d10ed4034f9c02818b00c154561be2
+PODFILE CHECKSUM: f83fac48d665b9db93e2b63b5fd6bfffea22f38c
 
 COCOAPODS: 1.8.4

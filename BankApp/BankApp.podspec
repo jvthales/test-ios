@@ -25,10 +25,7 @@ TODO: Add long description of the pod here.
   s.subspec "Core" do |sp|
     sp.source_files = ["BankApp/Classes/Core/**/*"]
     sp.resource_bundles = { "BankApp" => [
-      "BankApp/Assets/Fonts/*.{otf}",
-      "BankApp/Assets/**/*.{json}",
-      "BankApp/Assets/*.{png,storyboard,json,pdf}",
-      "BankApp/Assets/Fonts/*.xcassets",
+      "BankApp/Assets/*.{xcassets,png,storyboard,json,pdf}",
     ] }
   end
   
@@ -52,5 +49,5 @@ TODO: Add long description of the pod here.
     sp.dependency 'BankApp/Core'
   end
   
-  
+  s.dependency 'Alamofire', '~> 5.4'
 end

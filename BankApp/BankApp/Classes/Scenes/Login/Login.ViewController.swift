@@ -45,7 +45,7 @@ extension Login.ViewController {
             return stackView
         }()
         
-        private let imageView = UIImageView(image: UIImage(named: "logo"))
+        private var imageView = UIImageView(image: ImageManager.get("logo"))
         
         private let loginTextField: TextField = {
             let textField = TextField()
@@ -133,6 +133,7 @@ extension Login.ViewController {
         
         public func setupAdditionalConfigurations() {
             backgroundColor = .white
+            imageView.contentMode = .scaleAspectFit
             
             buttonStackView.axis = .vertical
             buttonStackView.alignment = .center

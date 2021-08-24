@@ -2,7 +2,7 @@
 //  Login.Presenter.swift
 //  BankApp
 //
-//  Created by Vinicius Teixeira on 15 Elul 5781.
+//  Created by Vinicius Teixeira.
 //
 
 protocol LoginPresentationLogic {
@@ -13,8 +13,6 @@ extension Login {
     
     class Presenter: LoginPresentationLogic {
         
-        func displayStatement() {
-            <#code#>
-        }
+        func displayStatement() {}
     }
 }

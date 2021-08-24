@@ -18,6 +18,11 @@
   "platforms": {
     "ios": "11.0"
   },
+  "dependencies": {
+    "Alamofire": [
+      "~> 5.4"
+    ]
+  },
   "subspecs": [
     {
       "name": "Core",
@@ -26,10 +31,7 @@
       ],
       "resource_bundles": {
         "BankApp": [
-          "BankApp/Assets/Fonts/*.{otf}",
-          "BankApp/Assets/**/*.{json}",
-          "BankApp/Assets/*.{png,storyboard,json,pdf}",
-          "BankApp/Assets/Fonts/*.xcassets"
+          "BankApp/Assets/*.{xcassets,png,storyboard,json,pdf}"
         ]
       }
     },

@@ -14,7 +14,7 @@ extension Login {
     class Interactor: LoginBusinessLogic {
     
         // MARK: Properties
-        var worker = LoginWorker()
+        var worker = Login.Worker()
         
         // MARK: LoginBusinessLogic
         func doLogin(request: Login.Request) {
