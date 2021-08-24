@@ -11,12 +11,6 @@ Pod::Spec.new do |s|
   s.version          = '0.1.0'
   s.summary          = 'A short description of BankApp.'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
                        DESC
@@ -27,14 +21,36 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/viniteixeira/BankApp.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '11.0'
-
-  s.source_files = 'BankApp/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'BankApp' => ['BankApp/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.subspec "Core" do |sp|
+    sp.source_files = ["BankApp/Classes/Core/**/*"]
+    sp.resource_bundles = { "BankApp" => [
+      "BankApp/Assets/Fonts/*.{otf}",
+      "BankApp/Assets/**/*.{json}",
+      "BankApp/Assets/*.{png,storyboard,json,pdf}",
+      "BankApp/Assets/Fonts/*.xcassets",
+    ] }
+  end
+  
+  s.subspec "Models" do |sp|
+    sp.source_files = 'BankApp/Classes/Models/**/*'
+    sp.dependency 'BankApp/Core'
+  end
+  
+  s.subspec "Scenes" do |sp|
+    sp.source_files = 'BankApp/Classes/Scenes/**/*'
+    sp.dependency 'BankApp/Core'
+  end
+  
+  s.subspec "Services" do |sp|
+    sp.source_files = 'BankApp/Classes/Services/**/*'
+    sp.dependency 'BankApp/Core'
+  end
+  
+  s.subspec "Workers" do |sp|
+    sp.source_files = 'BankApp/Classes/Workers/**/*'
+    sp.dependency 'BankApp/Core'
+  end
+  
+  
 end

@@ -18,5 +18,56 @@
   "platforms": {
     "ios": "11.0"
   },
-  "source_files": "BankApp/Classes/**/*"
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": [
+        "BankApp/Classes/Core/**/*"
+      ],
+      "resource_bundles": {
+        "BankApp": [
+          "BankApp/Assets/Fonts/*.{otf}",
+          "BankApp/Assets/**/*.{json}",
+          "BankApp/Assets/*.{png,storyboard,json,pdf}",
+          "BankApp/Assets/Fonts/*.xcassets"
+        ]
+      }
+    },
+    {
+      "name": "Models",
+      "source_files": "BankApp/Classes/Models/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Scenes",
+      "source_files": "BankApp/Classes/Scenes/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Services",
+      "source_files": "BankApp/Classes/Services/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Workers",
+      "source_files": "BankApp/Classes/Workers/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    }
+  ]
 }
