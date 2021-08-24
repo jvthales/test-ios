@@ -40,3 +40,41 @@ public extension UIAlertController {
         alertWindow.rootViewController?.present(self, animated: animated, completion: completion)
     }
 }
+
+public extension UITableView {
+    
+    func register<T: UITableViewCell>(_ types: T.Type...) {
+        types.forEach {
+            register(T.self, forCellReuseIdentifier: $0.identifier)
+        }
+    }
+    
+    func dequeueReusableCell<T: UITableViewCell>(_ type: T.Type, for indexPath: IndexPath) -> T {
+        if let cell = dequeueReusableCell(withIdentifier: type.identifier, for: indexPath) as? T {
+            return cell
+        } else {
+            return T()
+        }
+    }
+}
+
+fileprivate extension UITableViewCell {
+    
+    static var identifier: String {
+        String(describing: self)
+    }
+}
+
+public extension UIView {
+    func addShadow(offset: CGSize, color: UIColor, radius: CGFloat, opacity: Float) {
+        layer.masksToBounds = false
+        layer.shadowOffset = offset
+        layer.shadowColor = color.cgColor
+        layer.shadowRadius = radius
+        layer.shadowOpacity = opacity
+
+        let backgroundCGColor = backgroundColor?.cgColor
+        backgroundColor = nil
+        layer.backgroundColor =  backgroundCGColor
+    }
+}

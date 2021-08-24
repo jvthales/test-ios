@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: - ViewController
 public extension Statement {
     
     class MainViewController: UIViewController {
@@ -29,6 +30,7 @@ public extension Statement {
     }
 }
 
+// MARK: - View
 extension Statement.MainViewController {
     
     class View: UIView, CodeView {
@@ -43,7 +45,12 @@ extension Statement.MainViewController {
         }()
         
         private let header = Header()
-        private let tableView = UITableView()
+        private let tableView: UITableView = {
+            let tableView = UITableView()
+            tableView.register(Cell.self)
+            tableView.separatorStyle = .none
+            return tableView
+        }()
         
         // MARK: Properties
         
@@ -74,7 +81,7 @@ extension Statement.MainViewController {
         }
         
         func setupAdditionalConfigurations() {
-            backgroundColor = .white
+            backgroundColor = .clear
             
             tableView.dataSource = self
             tableView.delegate = self
@@ -82,16 +89,144 @@ extension Statement.MainViewController {
     }
 }
 
+// MARK: - View+UITableViewDataSource&UITableViewDelegate
 extension Statement.MainViewController.View: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(Cell.self, for: indexPath)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Recentes"
+        label.font = .systemFont(ofSize: 17)
+        label.textColor = UIColor.hexString(hex: "#485465")
+        
+        let stackView = UIStackView()
+        stackView.layoutMargins = .init(top: 14, left: 18, bottom: 14, right: 18)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.addArrangedSubview(label)
+        return stackView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
     }
 }
 
+// MARK: - Cell
+extension Statement.MainViewController.View {
+    
+    class Cell: UITableViewCell, CodeView {
+        
+        // MARK: Components
+        private let contentStackView: UIStackView = {
+            let stackView = UIStackView()
+            stackView.axis = .vertical
+            stackView.spacing = 14
+            stackView.layoutMargins = .init(top: 14, left: 14, bottom: 14, right: 14)
+            stackView.isLayoutMarginsRelativeArrangement = true
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            return stackView
+        }()
+        
+        private lazy var headerStackView = UIStackView(arrangedSubviews: [headerLabel, UIView(), dateLabel])
+        private let headerLabel: UILabel = {
+            let label = UILabel()
+            label.text = "Pagamento"
+            label.textColor = UIColor.hexString(hex: "#A8B4C4")
+            label.font = .systemFont(ofSize: 16)
+            return label
+        }()
+        
+        private let dateLabel: UILabel = {
+            let label = UILabel()
+            label.text = "11/11/2011"
+            label.textColor = UIColor.hexString(hex: "#A8B4C4")
+            label.font = .systemFont(ofSize: 12)
+            return label
+        }()
+        
+        private lazy var bottomStackView = UIStackView(arrangedSubviews: [descriptionLabel, UIView(), valueLabel])
+        private let descriptionLabel: UILabel = {
+            let label = UILabel()
+            label.text = "Conta de luz"
+            label.textColor = UIColor.hexString(hex: "#485465")
+            label.font = .systemFont(ofSize: 16)
+            return label
+        }()
+        
+        private let valueLabel: UILabel = {
+            let label = UILabel()
+            label.text = "R$ 1.000,00"
+            label.textColor = UIColor.hexString(hex: "#485465")
+            label.font = .systemFont(ofSize: 20)
+            return label
+        }()
+        
+        private let shapeView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .white
+            view.layer.cornerRadius = 6
+            view.clipsToBounds = true
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
+        // MARK: Initializers
+        override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            setupView()
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        // MARK: CodeView
+        func buildViewHierarchy() {
+            contentStackView.addArrangedSubview(headerStackView)
+            contentStackView.addArrangedSubview(bottomStackView)
+            shapeView.addSubview(contentStackView)
+            contentView.addSubview(shapeView)
+            contentView.addSubview(contentStackView)
+        }
+        
+        func setupConstraints() {
+            NSLayoutConstraint.activate([
+                shapeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                shapeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+                shapeView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                shapeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+                shapeView.heightAnchor.constraint(equalToConstant: 80),
+
+                contentStackView.leadingAnchor.constraint(equalTo: shapeView.leadingAnchor),
+                contentStackView.trailingAnchor.constraint(equalTo: shapeView.trailingAnchor),
+                contentStackView.topAnchor.constraint(equalTo: shapeView.topAnchor),
+                contentStackView.bottomAnchor.constraint(equalTo: shapeView.bottomAnchor)
+            ])
+        }
+        
+        func setupAdditionalConfigurations() {
+            contentView.backgroundColor = .clear
+            backgroundColor = .clear
+            
+            shapeView.layer.borderWidth = 1
+            shapeView.layer.borderColor = UIColor.hexString(hex: "#DBDFE3").withAlphaComponent(0.3).cgColor
+            shapeView.addShadow(offset: .init(width: 0, height: 5), color: UIColor.hexString(hex: "#D9E2E9"), radius: 12, opacity: 0.5)
+        }
+    }
+}
+
+// MARK: - Header
 extension Statement.MainViewController.View {
     
     class Header: UIView, CodeView {
