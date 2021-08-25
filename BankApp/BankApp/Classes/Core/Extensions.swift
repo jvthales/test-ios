@@ -87,3 +87,16 @@ public extension Double {
         return currencyFormatter.string(for: self) ?? ""
     }
 }
+
+public extension String {
+    func getDateFormatted() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "ddMMyyyy"
+        let date = dateFormatter.date(from: self)
+        if let date = date {
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            return dateFormatter.string(from: date)
+        }
+        return ""
+    }
+}
