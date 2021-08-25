@@ -1,0 +1,75 @@
+{
+  "name": "BankApp",
+  "version": "0.1.0",
+  "summary": "A short description of BankApp.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/viniteixeira/BankApp",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "viniteixeira": "viniteixeira10@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/viniteixeira/BankApp.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "dependencies": {
+    "Alamofire": [
+      "~> 5.4"
+    ]
+  },
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": [
+        "BankApp/Classes/Core/**/*"
+      ],
+      "resource_bundles": {
+        "BankApp": [
+          "BankApp/Assets/*.{xcassets,png,storyboard,json,pdf}"
+        ]
+      }
+    },
+    {
+      "name": "Models",
+      "source_files": "BankApp/Classes/Models/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Scenes",
+      "source_files": "BankApp/Classes/Scenes/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Services",
+      "source_files": "BankApp/Classes/Services/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Workers",
+      "source_files": "BankApp/Classes/Workers/**/*",
+      "dependencies": {
+        "BankApp/Core": [
+
+        ]
+      }
+    }
+  ]
+}
