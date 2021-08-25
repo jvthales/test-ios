@@ -1,0 +1,2 @@
+1. Como o mock de login não estava funcionando, criei uma funcionalide de login dentro do app usando as credencias do mock.
+2. O projeto foi criado como uma lib, então para funcionar é necessário ir na pasta de exemplo e dar um pod install e depois abrir o projeto.
