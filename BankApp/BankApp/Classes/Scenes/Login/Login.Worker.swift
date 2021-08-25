@@ -10,8 +10,12 @@ extension Login {
     class Worker {
         
         // MARK: Methods
-        func doLogin(request: Login.Request, completion: @escaping (Login.Response) -> Void) {
-            
+        func doLogin(request: Login.Request, completion: @escaping (Bool) -> Void) {
+            if request.user == "test_user" && request.password == "Test@1" {
+                completion(true)
+            } else {
+                completion(false)
+            }
         }
     }
 }

@@ -7,25 +7,61 @@
 
 import UIKit
 
+protocol StatementDisplayLogic: AnyObject {
+    func displayFetchedStatements(viewModel: Statement.ViewModel)
+}
+
 // MARK: - ViewController
 public extension Statement {
     
-    class MainViewController: UIViewController {
+    class MainViewController: UIViewController, StatementDisplayLogic {
         
         // MARK: Components
         lazy var myView = View()
         
         // MARK: Properties
-//        var router: Login.Router?
+        var interactor: StatementBusinessLogic?
+        var router: StatementRoutingLogic?
         
         // MARK: Methods
         private func setup() {
-//            myView.interactor = Login.Interactor()
+            let viewController = self
+            let interactor = Statement.Interactor()
+            let presenter = Statement.Presenter()
+            let router = Statement.Router()
+            viewController.interactor = interactor
+            viewController.router = router
+            presenter.viewController = viewController
+            interactor.presenter = presenter
+            router.viewController = viewController
+            
+            myView.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         }
         
         // MARK: UIViewController
         public override func loadView() {
             view = myView
+        }
+        
+        public override func viewDidLoad() {
+            super.viewDidLoad()
+            setup()
+        }
+        
+        public override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            interactor?.fetchStatement()
+        }
+        
+        // MARK: Actions
+        @objc
+        func backButtonTapped() {
+            router?.routeToLogin()
+        }
+        
+        // MARK: StatementDisplayLogic
+        func displayFetchedStatements(viewModel: Statement.ViewModel) {
+            myView.displayedStatements = viewModel.displayedStatements
         }
     }
 }
@@ -53,6 +89,9 @@ extension Statement.MainViewController {
         }()
         
         // MARK: Properties
+        var displayedStatements: [Statement.ViewModel.DisplayStatement] = [] {
+            didSet { tableView.reloadData() }
+        }
         
         // MARK: Initializers
         init() {
@@ -62,6 +101,11 @@ extension Statement.MainViewController {
         
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+        
+        // MARK: Methods
+        func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) {
+            header.addTarget(target, action: action, for: controlEvents)
         }
         
         // MARK: CodeView
@@ -96,11 +140,17 @@ extension Statement.MainViewController.View: UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return displayedStatements.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let statement = displayedStatements[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(Cell.self, for: indexPath)
+        cell.headerText = statement.type
+        cell.dateText = statement.date
+        cell.descriptionText = statement.detail
+        cell.valueText = statement.value
         return cell
     }
     
@@ -141,7 +191,6 @@ extension Statement.MainViewController.View {
         private lazy var headerStackView = UIStackView(arrangedSubviews: [headerLabel, UIView(), dateLabel])
         private let headerLabel: UILabel = {
             let label = UILabel()
-            label.text = "Pagamento"
             label.textColor = UIColor.hexString(hex: "#A8B4C4")
             label.font = .systemFont(ofSize: 16)
             return label
@@ -149,7 +198,6 @@ extension Statement.MainViewController.View {
         
         private let dateLabel: UILabel = {
             let label = UILabel()
-            label.text = "11/11/2011"
             label.textColor = UIColor.hexString(hex: "#A8B4C4")
             label.font = .systemFont(ofSize: 12)
             return label
@@ -158,7 +206,6 @@ extension Statement.MainViewController.View {
         private lazy var bottomStackView = UIStackView(arrangedSubviews: [descriptionLabel, UIView(), valueLabel])
         private let descriptionLabel: UILabel = {
             let label = UILabel()
-            label.text = "Conta de luz"
             label.textColor = UIColor.hexString(hex: "#485465")
             label.font = .systemFont(ofSize: 16)
             return label
@@ -166,7 +213,6 @@ extension Statement.MainViewController.View {
         
         private let valueLabel: UILabel = {
             let label = UILabel()
-            label.text = "R$ 1.000,00"
             label.textColor = UIColor.hexString(hex: "#485465")
             label.font = .systemFont(ofSize: 20)
             return label
@@ -180,6 +226,27 @@ extension Statement.MainViewController.View {
             view.translatesAutoresizingMaskIntoConstraints = false
             return view
         }()
+        
+        // MARK: Properties
+        var headerText: String {
+            get { headerLabel.text ?? "" }
+            set { headerLabel.text = newValue }
+        }
+        
+        var dateText: String {
+            get { dateLabel.text ?? "" }
+            set { dateLabel.text = newValue }
+        }
+        
+        var descriptionText: String {
+            get { descriptionLabel.text ?? "" }
+            set { descriptionLabel.text = newValue }
+        }
+        
+        var valueText: String {
+            get { valueLabel.text ?? "" }
+            set { valueLabel.text = newValue }
+        }
         
         // MARK: Initializers
         override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -287,8 +354,6 @@ extension Statement.MainViewController.View {
             return label
         }()
         
-        // MARK: Properties
-        
         // MARK: Initializers
         init() {
             super.init(frame: .zero)
@@ -297,6 +362,11 @@ extension Statement.MainViewController.View {
         
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+        
+        // MARK: Methods
+        func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) {
+            button.addTarget(target, action: action, for: controlEvents)
         }
         
         // MARK: CodeView

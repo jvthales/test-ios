@@ -7,25 +7,62 @@
 
 import UIKit
 
+protocol LoginDisplayLogic: AnyObject {
+    func displayStatement()
+    func displayAlert(message: String)
+}
+
 // MARK: - ViewController
 public extension Login {
     
-    class ViewController: UIViewController {
+    class ViewController: UIViewController, LoginDisplayLogic {
         
         // MARK: Components
         lazy var myView = View()
         
         // MARK: Properties
         var router: Login.Router?
+        var interactor: LoginBusinessLogic?
         
         // MARK: Methods
         private func setup() {
-            myView.interactor = Login.Interactor()
+            let viewController = self
+            let interactor = Login.Interactor()
+            let presenter = Login.Presenter()
+            let router = Login.Router()
+            viewController.interactor = interactor
+            viewController.router = router
+            presenter.viewController = viewController
+            interactor.presenter = presenter
+            router.viewController = viewController
+            
+            myView.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         }
         
         // MARK: UIViewController
         public override func loadView() {
             view = myView
+        }
+        
+        public override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            setup()
+        }
+        
+        // MARK: Actions
+        @objc
+        private func loginButtonTapped() {
+            interactor?.doLogin(request: .init(user: myView.user, password: myView.password))
+        }
+        
+        // MARK: LoginDisplayLogic
+        func displayStatement() {
+            router?.routeToStatement()
+        }
+        
+        func displayAlert(message: String) {
+            router?.routeToAlert(message: message)
         }
     }
 }
@@ -56,6 +93,7 @@ extension Login.ViewController {
         private let passwordTextField: TextField = {
             let textField = TextField()
             textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
             return textField
         }()
         
@@ -70,17 +108,15 @@ extension Login.ViewController {
         private let buttonStackView = UIStackView()
         
         // MARK: Properties
-        private var user: String {
+        public var user: String {
             get { loginTextField.text ?? "" }
             set { loginTextField.text = newValue }
         }
         
-        private var password: String {
+        public var password: String {
             get { passwordTextField.text ?? "" }
             set { passwordTextField.text = newValue }
         }
-        
-        public var interactor: Login.Interactor?
         
         // MARK: Initializers
         init() {
@@ -94,14 +130,8 @@ extension Login.ViewController {
         }
         
         // MARK: Actions
-        @objc
-        private func didButtonTap() {
-            guard !user.isEmpty && !password.isEmpty else {
-                let alertController = UIAlertController(title: "Atenção", message: "Preencha os campos de usuário e senha para prosseguir.", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                alertController.present(animated: true, completion: nil)
-                return
-            }
+        public func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControlEvents) {
+            button.addTarget(target, action: action, for: controlEvents)
         }
         
         // MARK: CodeView
@@ -139,8 +169,6 @@ extension Login.ViewController {
             buttonStackView.alignment = .center
             
             button.layer.cornerRadius = 4
-            button.addTarget(self, action: #selector(didButtonTap), for: .touchUpInside)
-            
         }
     }
 }

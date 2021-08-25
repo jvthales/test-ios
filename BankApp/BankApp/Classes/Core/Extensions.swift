@@ -78,3 +78,12 @@ public extension UIView {
         layer.backgroundColor =  backgroundCGColor
     }
 }
+
+public extension Double {
+    func toMoneyString(symbol: String) -> String {
+        let currencyFormatter = NumberFormatter()
+        currencyFormatter.numberStyle = .currency
+        currencyFormatter.currencySymbol = symbol
+        return currencyFormatter.string(for: self) ?? ""
+    }
+}

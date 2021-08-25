@@ -16,8 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        let loginViewController = Statement.MainViewController()
-        window?.rootViewController = loginViewController
+        let navigationController = UINavigationController()
+        navigationController.isNavigationBarHidden = true
+        let loginViewController = Login.ViewController()
+        navigationController.addChildViewController(loginViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
         return true

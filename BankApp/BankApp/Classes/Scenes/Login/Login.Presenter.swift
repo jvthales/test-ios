@@ -6,13 +6,24 @@
 //
 
 protocol LoginPresentationLogic {
-    func displayStatement()
+    func presentToStatement()
+    func presentAlert(message: String)
 }
 
 extension Login {
     
     class Presenter: LoginPresentationLogic {
         
-        func displayStatement() {}
+        // MARK: Properties
+        weak var viewController: LoginDisplayLogic?
+        
+        // MARK: LoginPresentationLogic
+        func presentToStatement() {
+            viewController?.displayStatement()
+        }
+        
+        func presentAlert(message: String) {
+            viewController?.displayAlert(message: message)
+        }
     }
 }

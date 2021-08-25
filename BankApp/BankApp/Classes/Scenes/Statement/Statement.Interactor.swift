@@ -15,11 +15,12 @@ extension Statement {
     
         // MARK: Properties
         var worker = Statement.Worker()
+        var presenter: StatementPresentationLogic?
         
         // MARK: StatementBusinessLogic
         func fetchStatement() {
             worker.fetchStatement { response in
-                
+                self.presenter?.presentFetchedStatements(response: response)
             }
         }
     }
